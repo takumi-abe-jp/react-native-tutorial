@@ -3,9 +3,12 @@ import * as React from 'react';
 import { StyleSheet, Button, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const SettingsStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   container: {
@@ -19,10 +22,27 @@ const styles = StyleSheet.create({
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Overview' }} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="First">
+          {() => (
+            <SettingsStack.Navigator>
+              <SettingsStack.Screen
+                name="Home"
+                component={HomeScreen}
+              />
+              <SettingsStack.Screen name="Details" component={DetailsScreen} />
+            </SettingsStack.Navigator>
+          )}
+        </Tab.Screen>
+        <Tab.Screen name="Second">
+          {() => (
+            <HomeStack.Navigator>
+              <HomeStack.Screen name="Home" component={HomeScreen} />
+              <HomeStack.Screen name="Details" component={DetailsScreen} />
+            </HomeStack.Navigator>
+          )}
+        </Tab.Screen>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
